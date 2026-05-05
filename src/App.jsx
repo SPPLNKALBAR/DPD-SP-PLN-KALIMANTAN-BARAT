@@ -15,8 +15,8 @@ import {
   Clock,
   Bookmark
 } from 'lucide-react';
-import { Navbar, TabType } from './components/Navbar.tsx';
-import { Structure } from './components/Structure.tsx';
+import { Navbar } from './components/Navbar.jsx';
+import { Structure } from './components/Structure.jsx';
 import { cn } from './lib/utils';
 
 // Latest News Data
@@ -45,7 +45,7 @@ const newsItems = [
 ];
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<TabType>('home');
+  const [activeTab, setActiveTab] = useState('home');
 
   return (
     <div className="min-h-screen relative overflow-x-hidden">

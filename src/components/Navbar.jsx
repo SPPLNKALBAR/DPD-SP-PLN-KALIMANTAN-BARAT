@@ -2,20 +2,13 @@ import React from 'react';
 import { Home, Newspaper, LayoutDashboard, Network, Info, MessageSquare, Search, Menu, Globe } from 'lucide-react';
 import { cn } from '../lib/utils';
 
-export type TabType = 'home' | 'news' | 'dashboard' | 'structure' | 'about' | 'aspiration';
-
-interface NavbarProps {
-  activeTab: TabType;
-  onTabChange: (tab: TabType) => void;
-}
-
-const navItems: { icon: any; label: string; id: TabType }[] = [
+const navItems = [
   { icon: Home, label: 'Beranda', id: 'home' },
   { icon: Network, label: 'Struktur Organisasi', id: 'structure' },
   { icon: Info, label: 'Tentang', id: 'about' },
 ];
 
-export function Navbar({ activeTab, onTabChange }: NavbarProps) {
+export function Navbar({ activeTab, onTabChange }) {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-nav h-20 px-6 md:px-12 flex items-center">
       {/* Logo Section - Left Side */}

@@ -3,19 +3,6 @@ import { motion } from 'motion/react';
 import { User, Users, Shield, Briefcase, Heart, MessageCircle, Factory } from 'lucide-react';
 import { cn } from '../lib/utils';
 
-interface Member {
-  name: string;
-  id?: string;
-  role?: string;
-}
-
-interface Bureau {
-  name: string;
-  icon: any;
-  head: Member;
-  members: Member[];
-}
-
 const pembina = [
   { name: 'Syarif Usmulyansyah' },
   { name: 'Uray Suryadi', id: '7905067C' },
@@ -33,7 +20,7 @@ const deputies = [
   { role: 'Wakil Bendahara', name: 'Nadya Intan Milasari', id: '93161870ZY' },
 ];
 
-const bureaus: Bureau[] = [
+const bureaus = [
   {
     name: 'Biro Organisasi',
     icon: Users,
