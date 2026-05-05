@@ -1,13 +1,546 @@
 <!doctype html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DPD SP PLN Kalbar</title>
+    <!-- Vite akan secara otomatis mengkompilasi file CSS ini lengkap dengan Tailwind -->
+    <link rel="stylesheet" href="/src/index.css" />
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    </style>
   </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+  <body class="bg-slate-50 relative min-h-screen overflow-x-hidden text-slate-800">
+    <div class="min-h-screen relative overflow-x-hidden">
+      <!-- Global Background Map Layer -->
+      <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Map_of_West_Kalimantan.svg/1200px-Map_of_West_Kalimantan.svg.png" 
+             alt="West Kalimantan Map" 
+             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160%] min-w-[1000px] h-auto opacity-[0.12] invert grayscale blur-[2px] select-none" />
+      </div>
+
+      <!-- Global Background Logo Layer -->
+      <div class="fixed inset-0 pointer-events-none z-0 flex items-center justify-center overflow-hidden">
+        <div class="relative w-full h-full flex items-center justify-center">
+          <img src="https://drive.google.com/thumbnail?id=1NcadbSCAmRCiE3RLjXcEy3cEj3_Hul6M&sz=w1000" 
+               alt="Background Logo Organisasi" 
+               class="w-[90%] md:w-[60%] lg:w-[45%] opacity-[0.08] select-none object-contain animate-pulse-slow" />
+          <div class="absolute inset-0 bg-white/40 backdrop-blur-[1px]"></div>
+        </div>
+      </div>
+
+      <div class="relative z-10 min-h-screen pt-24 pb-20">
+        <!-- Navbar -->
+        <nav class="fixed top-0 left-0 right-0 z-50 glass-nav h-20 px-6 md:px-12 flex items-center">
+          <!-- Logo Section - Left Side -->
+          <div class="flex-1 flex items-center">
+            <div class="flex items-center gap-5 cursor-pointer relative group" onclick="switchTab('home')">
+              <div class="relative flex items-center justify-center">
+                <img src="https://drive.google.com/thumbnail?id=1NcadbSCAmRCiE3RLjXcEy3cEj3_Hul6M&sz=w500" 
+                     alt="Logo Organisasi" 
+                     class="object-contain relative z-10 group-hover:scale-110 transition-all duration-700"
+                     style="width: 64px;" />
+                <div class="absolute inset-0 bg-brand-red/10 rounded-full blur-2xl group-hover:bg-brand-red/20 transition-all duration-700 -z-10"></div>
+              </div>
+              <div class="flex flex-col">
+                <div class="flex items-baseline gap-1">
+                  <span class="font-sans font-black text-2xl md:text-3xl tracking-tighter text-brand-red leading-none pt-0">DPD SP</span>
+                  <span class="font-sans font-black text-2xl md:text-3xl tracking-tighter text-slate-900 leading-none">PLN</span>
+                </div>
+                <span class="text-[11px] font-black uppercase tracking-[0.35em] text-slate-500 mt-2 leading-none">Kalimantan Barat</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Items - Center Side -->
+          <div class="hidden lg:flex flex-1 justify-center items-center gap-2">
+            <button id="nav-btn-home" onclick="switchTab('home')" class="nav-btn px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2.5 border border-transparent whitespace-nowrap text-slate-600 hover:text-brand-red hover:bg-slate-50 hover:border-slate-200">
+              <i data-lucide="home" class="w-4 h-4"></i> Beranda
+            </button>
+            <button id="nav-btn-structure" onclick="switchTab('structure')" class="nav-btn px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2.5 border border-transparent whitespace-nowrap text-slate-600 hover:text-brand-red hover:bg-slate-50 hover:border-slate-200">
+              <i data-lucide="network" class="w-4 h-4"></i> Struktur Organisasi
+            </button>
+            <button id="nav-btn-about" onclick="switchTab('about')" class="nav-btn px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2.5 border border-transparent whitespace-nowrap text-slate-600 hover:text-brand-red hover:bg-slate-50 hover:border-slate-200">
+              <i data-lucide="info" class="w-4 h-4"></i> Tentang
+            </button>
+          </div>
+
+          <div class="flex-1 hidden lg:flex justify-end items-center gap-4"></div>
+
+          <!-- Mobile Menu Icon -->
+          <div class="lg:hidden">
+            <button class="p-3 rounded-2xl bg-slate-50 text-slate-600">
+              <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+          </div>
+        </nav>
+
+        <main class="max-w-7xl mx-auto px-4 md:px-8">
+          <!-- HOME TAB -->
+          <div id="tab-home" class="tab-content">
+            <section class="mb-12">
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                <div class="lg:col-span-8 glass-white rounded-[2rem] p-4 group cursor-pointer card-3d">
+                  <div class="relative aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-[1.5rem]">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200" 
+                         alt="Headline" 
+                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 md:p-12">
+                      <span class="bg-brand-red text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest w-fit mb-4 shadow-lg shadow-black/20">Berita Utama</span>
+                      <h1 class="text-white text-3xl md:text-5xl font-serif font-bold leading-tight max-w-2xl mb-4 group-hover:text-brand-yellow transition-colors">Transformasi Digital dan Efisiensi Energi di Kalimantan Barat</h1>
+                      <div class="flex items-center gap-6 text-white/80 text-xs font-semibold uppercase tracking-wider">
+                        <span class="flex items-center gap-2"><i data-lucide="user" class="w-4 h-4"></i> Humas SP PLN</span>
+                        <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-4 h-4"></i> 04 Mei 2026</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="lg:col-span-4 glass-white rounded-[2rem] p-8 flex flex-col justify-between card-3d">
+                  <div>
+                    <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                      <i data-lucide="newspaper" class="w-5 h-5 text-brand-red"></i> Pengumuman
+                    </h2>
+                    <div class="space-y-6">
+                      <div class="group cursor-pointer">
+                        <p class="text-[10px] text-brand-red font-bold uppercase tracking-widest mb-1">05/05/2026</p>
+                        <h3 class="text-sm font-bold text-slate-800 group-hover:text-brand-red transition-colors line-clamp-2">Pendaftaran Anggota Baru Siklus Mei 2026 Telah Dibuka</h3>
+                        <div class="mt-2 h-[1px] w-full bg-slate-200"></div>
+                      </div>
+                      <div class="group cursor-pointer">
+                        <p class="text-[10px] text-brand-red font-bold uppercase tracking-widest mb-1">01/05/2026</p>
+                        <h3 class="text-sm font-bold text-slate-800 group-hover:text-brand-red transition-colors line-clamp-2">Daftar Regulasi dan Tunjangan Karyawan 2026</h3>
+                        <div class="mt-2 h-[1px] w-full bg-slate-200"></div>
+                      </div>
+                      <div class="group cursor-pointer">
+                        <p class="text-[10px] text-brand-red font-bold uppercase tracking-widest mb-1">20/04/2026</p>
+                        <h3 class="text-sm font-bold text-slate-800 group-hover:text-brand-red transition-colors line-clamp-2">Laporan Kegiatan Buka Puasa Bersama DPD SP PLN Kalbar</h3>
+                        <div class="mt-2 h-[1px] w-full bg-slate-200"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="flex items-center gap-2 text-sm font-bold text-brand-red hover:gap-3 transition-all mt-8">
+                    Semua Pengumuman <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <section class="mb-20">
+              <div class="flex items-end justify-between mb-8">
+                <div>
+                  <span class="text-brand-red text-xs font-black uppercase tracking-[0.2em]">Pembaruan Terkini</span>
+                  <h2 class="text-3xl font-serif font-bold text-slate-800 mt-2 italic">Kabar Organisasi</h2>
+                </div>
+                <button class="text-sm font-bold text-slate-400 hover:text-brand-red transition-colors flex items-center gap-1">
+                  Lihat Semua <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </button>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <article class="glass-white rounded-[2rem] news-card-hover p-4 card-3d">
+                  <div class="aspect-[4/3] overflow-hidden rounded-2xl mb-6">
+                    <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80&w=800" alt="News" />
+                  </div>
+                  <div class="px-2 pb-4">
+                    <div class="flex items-center justify-between mb-3">
+                      <span class="text-[10px] font-black tracking-widest text-brand-red uppercase">MUSEUM</span>
+                      <div class="flex items-center gap-2 text-[10px] text-slate-500 font-bold">
+                        <i data-lucide="clock" class="w-3 h-3"></i> 04 Mei 2026
+                      </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 leading-snug mb-3 hover:text-brand-red transition-colors line-clamp-2">Rapat Koordinasi Wilayah DPD SP PLN Kalbar 2026</h3>
+                    <p class="text-sm text-slate-600 line-clamp-3 mb-6 font-medium leading-relaxed">Rapat koordinasi ini membahas tentang penguatan kesejahteraan anggota dan sinergi operasional di wilayah Kalimantan Barat.</p>
+                    <div class="flex items-center justify-between">
+                      <button class="text-xs font-bold text-brand-red flex items-center gap-1 group">
+                        Selengkapnya <i data-lucide="chevron-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                      </button>
+                      <button class="p-2 text-slate-300 hover:text-brand-red transition-colors"><i data-lucide="bookmark" class="w-4 h-4"></i></button>
+                    </div>
+                  </div>
+                </article>
+                <article class="glass-white rounded-[2rem] news-card-hover p-4 card-3d">
+                  <div class="aspect-[4/3] overflow-hidden rounded-2xl mb-6">
+                    <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80&w=800" alt="News" />
+                  </div>
+                  <div class="px-2 pb-4">
+                    <div class="flex items-center justify-between mb-3">
+                      <span class="text-[10px] font-black tracking-widest text-brand-red uppercase">ADVOKASI</span>
+                      <div class="flex items-center gap-2 text-[10px] text-slate-500 font-bold">
+                        <i data-lucide="clock" class="w-3 h-3"></i> 02 Mei 2026
+                      </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 leading-snug mb-3 hover:text-brand-red transition-colors line-clamp-2">Kesejahteraan Anggota Jadi Prioritas Utama Tahun Ini</h3>
+                    <p class="text-sm text-slate-600 line-clamp-3 mb-6 font-medium leading-relaxed">Pengurus DPD SP PLN Kalbar berkomitmen terus berjuang dalam kebijakan-kebijakan yang berpihak pada karyawan.</p>
+                    <div class="flex items-center justify-between">
+                      <button class="text-xs font-bold text-brand-red flex items-center gap-1 group">
+                        Selengkapnya <i data-lucide="chevron-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                      </button>
+                      <button class="p-2 text-slate-300 hover:text-brand-red transition-colors"><i data-lucide="bookmark" class="w-4 h-4"></i></button>
+                    </div>
+                  </div>
+                </article>
+                <article class="glass-white rounded-[2rem] news-card-hover p-4 card-3d">
+                  <div class="aspect-[4/3] overflow-hidden rounded-2xl mb-6">
+                    <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&q=80&w=800" alt="News" />
+                  </div>
+                  <div class="px-2 pb-4">
+                    <div class="flex items-center justify-between mb-3">
+                      <span class="text-[10px] font-black tracking-widest text-brand-red uppercase">SOSIAL</span>
+                      <div class="flex items-center gap-2 text-[10px] text-slate-500 font-bold">
+                        <i data-lucide="clock" class="w-3 h-3"></i> 28 April 2026
+                      </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 leading-snug mb-3 hover:text-brand-red transition-colors line-clamp-2">SP PLN Peduli: Bantuan Sosial Untuk Korban Banjir</h3>
+                    <p class="text-sm text-slate-600 line-clamp-3 mb-6 font-medium leading-relaxed">Distribusi bantuan logistik dilakukan secara langsung oleh tim relawan SP PLN Kalbar di beberapa titik terdampak.</p>
+                    <div class="flex items-center justify-between">
+                      <button class="text-xs font-bold text-brand-red flex items-center gap-1 group">
+                        Selengkapnya <i data-lucide="chevron-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                      </button>
+                      <button class="p-2 text-slate-300 hover:text-brand-red transition-colors"><i data-lucide="bookmark" class="w-4 h-4"></i></button>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <!-- Info Banner -->
+            <section class="relative glass-white rounded-[3rem] p-8 md:p-16 overflow-hidden card-3d group">
+              <div class="absolute top-0 right-0 w-1/2 h-full bg-rose-950/20 skew-x-[-20deg] translate-x-20 z-0"></div>
+              <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                  <h2 class="text-4xl font-serif font-black text-slate-900 leading-tight italic">Berjuang Bersama Untuk <span class="text-brand-red">PLN Berjaya</span></h2>
+                  <p class="mt-6 text-slate-600 leading-relaxed font-medium">Kami hadir sebagai wadah aspirasi dan perjuangan seluruh karyawan PLN di wilayah Kalimantan Barat. Bersatu dalam harmoni untuk mewujudkan kesejahteraan dan pelayanan prima.</p>
+                  <div class="flex flex-wrap gap-4 mt-10">
+                    <button class="bg-brand-red text-white px-8 py-3 rounded-full text-sm font-bold shadow-xl shadow-brand-red/20 hover:scale-105 transition-all">Profil SP PLN</button>
+                    <button class="border border-slate-200 text-slate-600 px-8 py-3 rounded-full text-sm font-bold hover:bg-slate-50 transition-all">Hubungi Kami</button>
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="p-8 glass-white rounded-3xl flex flex-col items-center text-center card-3d">
+                    <h4 class="text-3xl font-black text-brand-red">1200+</h4>
+                    <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mt-2">Anggota Aktif</p>
+                  </div>
+                  <div class="p-8 glass-white rounded-3xl flex flex-col items-center text-center card-3d">
+                    <h4 class="text-3xl font-black text-brand-red">14</h4>
+                    <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mt-2">Unit Wilayah</p>
+                  </div>
+                  <div class="p-8 glass-white rounded-3xl flex flex-col items-center text-center card-3d">
+                    <h4 class="text-3xl font-black text-brand-red">100+</h4>
+                    <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mt-2">Program Advokasi</p>
+                  </div>
+                  <div class="p-8 glass-white rounded-3xl flex flex-col items-center text-center card-3d">
+                    <h4 class="text-3xl font-black text-brand-red">24/7</h4>
+                    <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mt-2">Layanan Pengaduan</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- ABOUT TAB (Placeholder) -->
+          <div id="tab-about" class="tab-content">
+            <div class="min-h-[60vh] flex flex-col items-center justify-center text-center p-12 glass-white rounded-[3rem]">
+              <h2 class="text-3xl font-serif font-bold text-slate-800 italic mb-4">Halaman Tentang sedang dalam pengembangan</h2>
+              <p class="text-slate-500 font-medium">Kami sedang menyiapkan konten terbaik untuk Anda.</p>
+              <button onclick="switchTab('home')" class="mt-8 bg-brand-red text-white px-8 py-3 rounded-full text-sm font-bold shadow-xl shadow-brand-red/20 transform hover:-translate-y-1 transition-all">
+                Kembali ke Beranda
+              </button>
+            </div>
+          </div>
+
+          <!-- STRUCTURE TAB -->
+          <div id="tab-structure" class="tab-content">
+            <div class="space-y-8 pb-10">
+              <div class="text-center space-y-3">
+                <h2 class="text-4xl font-serif font-black text-slate-800 italic">Struktur Organisasi</h2>
+                <p class="text-slate-500 font-bold uppercase tracking-[0.2em] text-xs">Dewan Pimpinan Daerah SP PLN Kalimantan Barat</p>
+              </div>
+
+              <!-- Pembina Section -->
+              <section class="space-y-8">
+                <div class="flex flex-col items-center">
+                  <span class="text-[10px] font-black tracking-[0.3em] text-brand-red uppercase mb-4 bg-brand-red/10 px-4 py-1 rounded-full">Dewan Pembina</span>
+                  <div class="flex flex-wrap justify-center gap-4">
+                    <div class="glass-white p-4 rounded-xl min-w-[160px] text-center card-3d">
+                      <p class="text-sm font-bold text-slate-800">Syarif Usmulyansyah</p>
+                    </div>
+                    <div class="glass-white p-4 rounded-xl min-w-[160px] text-center card-3d">
+                      <p class="text-sm font-bold text-slate-800">Uray Suryadi</p>
+                      <p class="text-[10px] text-slate-500 font-mono mt-1">7905067C</p>
+                    </div>
+                    <div class="glass-white p-4 rounded-xl min-w-[160px] text-center card-3d">
+                      <p class="text-sm font-bold text-slate-800">Hamidah</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Main Structure Tree -->
+              <section class="flex flex-col items-center relative w-full pt-8">
+                <!-- Ketua -->
+                <div class="glass-white px-8 py-5 rounded-2xl border-2 border-brand-red/40 shadow-xl shadow-black/30 text-center relative z-10 min-w-[220px] mb-12 card-3d">
+                  <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-red text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest whitespace-nowrap shadow-lg z-20 flex items-center justify-center">KETUA</div>
+                  <h3 class="text-2xl font-black text-slate-900 leading-tight mt-2">Akhmad Junaidi</h3>
+                  <p class="text-sm text-brand-red font-mono font-bold mt-2">7305043C</p>
+                </div>
+
+                <!-- Secretary & Treasurer Row -->
+                <div class="w-full max-w-6xl relative">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 px-4 relative">
+                    <!-- Sekretaris Side -->
+                    <div class="flex flex-col items-center space-y-4 relative pt-4">
+                      <div class="glass-white w-full p-4 rounded-xl border-l-4 border-brand-red text-center relative z-10 shadow-xl shadow-black/20 card-3d">
+                        <span class="text-[9px] font-black uppercase tracking-widest text-brand-red">Sekretaris</span>
+                        <h4 class="text-md font-bold text-slate-900 mt-1">Sy. Ilham Kurniawan Alkadri</h4>
+                        <p class="text-[10px] text-slate-500 font-mono mt-1">83066642</p>
+                      </div>
+                      <!-- Wakil Sekretaris -->
+                      <div class="glass-white w-3/4 p-4 rounded-lg border-l-4 border-brand-red/40 text-center scale-95 opacity-90 shadow-sm card-3d">
+                        <span class="text-[8px] font-black uppercase tracking-widest text-slate-500">Wakil Sekretaris</span>
+                        <h5 class="text-sm font-bold text-slate-800 mt-0.5">Indra Adhitya Eka Putri</h5>
+                        <p class="text-[9px] text-slate-400 font-mono">921719352Y</p>
+                      </div>
+                    </div>
+
+                    <!-- Bendahara Side -->
+                    <div class="flex flex-col items-center space-y-4 relative pt-4">
+                      <div class="glass-white w-full p-4 rounded-xl border-r-4 border-brand-red text-center relative z-10 shadow-xl shadow-black/20 card-3d">
+                        <span class="text-[9px] font-black uppercase tracking-widest text-brand-red">Bendahara</span>
+                        <h4 class="text-md font-bold text-slate-900 mt-1">Sri Narolita</h4>
+                        <p class="text-[10px] text-slate-500 font-mono mt-1">8005005J</p>
+                      </div>
+                      <!-- Wakil Bendahara -->
+                      <div class="glass-white w-3/4 p-3 rounded-lg border-r-4 border-brand-red/40 text-center scale-95 opacity-90 card-3d">
+                        <span class="text-[8px] font-black uppercase tracking-widest text-slate-500">Wakil Bendahara</span>
+                        <h5 class="text-xs font-bold text-slate-800 mt-0.5">Nadya Intan Milasari</h5>
+                        <p class="text-[9px] text-slate-400 font-mono">93161870ZY</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Bureaus Section -->
+              <section class="pt-12 border-t border-slate-200">
+                <div class="text-center mb-8">
+                  <span class="text-[10px] font-black tracking-[0.3em] text-brand-red uppercase bg-brand-red/10 px-4 py-1 rounded-full">Biro-Biro Organisasi</span>
+                </div>
+                
+                <!-- Horizontal Scroll Container for Mobile, Grid for Desktop -->
+                <div class="flex lg:grid lg:grid-cols-5 gap-4 overflow-x-auto pb-8 snap-x no-scrollbar">
+                  
+                  <!-- Biro Organisasi -->
+                  <div class="glass-white rounded-2xl p-4 flex flex-col items-center group hover:-translate-y-1 transition-all duration-300 min-w-[220px] lg:min-w-0 snap-center shrink-0 border border-slate-100 card-3d">
+                    <div class="w-10 h-10 rounded-xl bg-brand-red/10 flex items-center justify-center mb-4 group-hover:bg-brand-red transition-colors">
+                      <i data-lucide="users" class="w-5 h-5 text-brand-red group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h4 class="text-xs font-black text-slate-900 text-center leading-tight mb-4 min-h-[2.5rem] flex items-center uppercase">Biro Organisasi</h4>
+                    <div class="w-full space-y-3">
+                      <div class="text-center p-2 bg-slate-50 rounded-lg border border-slate-200">
+                        <span class="text-[7px] font-black uppercase tracking-widest text-brand-red block mb-0.5">Ketua Biro</span>
+                        <p class="text-[10px] font-bold text-slate-900 truncate">Hery Julianto</p>
+                        <p class="text-[8px] text-slate-500 font-mono">8908022C</p>
+                      </div>
+                      <div class="space-y-1.5">
+                        <span class="text-[7px] font-black uppercase tracking-widest text-slate-400 block mb-1 text-center">Anggota</span>
+                        <div class="text-center px-2 py-1.5 bg-slate-50/50 rounded-md border border-slate-100">
+                          <p class="text-[9px] font-bold text-slate-700 truncate">R. M. Hadi Kusuma</p><p class="text-[7px] text-slate-400 font-mono leading-none">8307017C</p>
+                        </div>
+                        <div class="text-center px-2 py-1.5 bg-slate-50/50 rounded-md border border-slate-100">
+                          <p class="text-[9px] font-bold text-slate-700 truncate">Hero Putra Perdana</p><p class="text-[7px] text-slate-400 font-mono leading-none">8808010C</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Biro Advokasi -->
+                  <div class="glass-white rounded-2xl p-4 flex flex-col items-center group hover:-translate-y-1 transition-all duration-300 min-w-[220px] lg:min-w-0 snap-center shrink-0 border border-slate-100 card-3d">
+                    <div class="w-10 h-10 rounded-xl bg-brand-red/10 flex items-center justify-center mb-4 group-hover:bg-brand-red transition-colors">
+                      <i data-lucide="message-circle" class="w-5 h-5 text-brand-red group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h4 class="text-xs font-black text-slate-900 text-center leading-tight mb-4 min-h-[2.5rem] flex items-center uppercase">Biro Advokasi</h4>
+                    <div class="w-full space-y-3">
+                      <div class="text-center p-2 bg-slate-50 rounded-lg border border-slate-200">
+                        <span class="text-[7px] font-black uppercase tracking-widest text-brand-red block mb-0.5">Ketua Biro</span>
+                        <p class="text-[10px] font-bold text-slate-900 truncate">Asnawi</p>
+                        <p class="text-[8px] text-slate-500 font-mono">8509327Z</p>
+                      </div>
+                      <div class="space-y-1.5">
+                        <span class="text-[7px] font-black uppercase tracking-widest text-slate-400 block mb-1 text-center">Anggota</span>
+                        <div class="text-center px-2 py-1.5 bg-slate-50/50 rounded-md border border-slate-100">
+                          <p class="text-[9px] font-bold text-slate-700 truncate">Umar Wijaksono</p><p class="text-[7px] text-slate-400 font-mono leading-none">92171202ZY</p>
+                        </div>
+                        <div class="text-center px-2 py-1.5 bg-slate-50/50 rounded-md border border-slate-100">
+                          <p class="text-[9px] font-bold text-slate-700 truncate">Tim Internal Lainnya</p><p class="text-[7px] text-slate-400 font-mono leading-none">-</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Biro Kesejahteraan -->
+                  <div class="glass-white rounded-2xl p-4 flex flex-col items-center group hover:-translate-y-1 transition-all duration-300 min-w-[220px] lg:min-w-0 snap-center shrink-0 border border-slate-100 card-3d">
+                    <div class="w-10 h-10 rounded-xl bg-brand-red/10 flex items-center justify-center mb-4 group-hover:bg-brand-red transition-colors">
+                      <i data-lucide="heart" class="w-5 h-5 text-brand-red group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h4 class="text-xs font-black text-slate-900 text-center leading-tight mb-4 min-h-[2.5rem] flex items-center uppercase">Biro Kesejahteraan</h4>
+                    <div class="w-full space-y-3">
+                      <div class="text-center p-2 bg-slate-50 rounded-lg border border-slate-200">
+                        <span class="text-[7px] font-black uppercase tracking-widest text-brand-red block mb-0.5">Ketua Biro</span>
+                        <p class="text-[10px] font-bold text-slate-900 truncate">Sugiwantoro</p>
+                        <p class="text-[8px] text-slate-500 font-mono">7191077C</p>
+                      </div>
+                      <div class="space-y-1.5">
+                        <span class="text-[7px] font-black uppercase tracking-widest text-slate-400 block mb-1 text-center">Anggota</span>
+                        <div class="text-center px-2 py-1.5 bg-slate-50/50 rounded-md border border-slate-100">
+                          <p class="text-[9px] font-bold text-slate-700 truncate">Gagah Anugrah</p><p class="text-[7px] text-slate-400 font-mono leading-none">93171055ZY</p>
+                        </div>
+                        <div class="text-center px-2 py-1.5 bg-slate-50/50 rounded-md border border-slate-100">
+                          <p class="text-[9px] font-bold text-slate-700 truncate">Budion Rizki P.</p><p class="text-[7px] text-slate-400 font-mono leading-none">94185312Y</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Biro Hubungan Masyarakat -->
+                  <div class="glass-white rounded-2xl p-4 flex flex-col items-center group hover:-translate-y-1 transition-all duration-300 min-w-[220px] lg:min-w-0 snap-center shrink-0 border border-slate-100 card-3d">
+                    <div class="w-10 h-10 rounded-xl bg-brand-red/10 flex items-center justify-center mb-4 group-hover:bg-brand-red transition-colors">
+                      <i data-lucide="users" class="w-5 h-5 text-brand-red group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h4 class="text-xs font-black text-slate-900 text-center leading-tight mb-4 min-h-[2.5rem] flex items-center uppercase">Biro Hub. Masyarakat</h4>
+                    <div class="w-full space-y-3">
+                      <div class="text-center p-2 bg-slate-50 rounded-lg border border-slate-200">
+                        <span class="text-[7px] font-black uppercase tracking-widest text-brand-red block mb-0.5">Ketua Biro</span>
+                        <p class="text-[10px] font-bold text-slate-900 truncate">Agustian Saputra</p>
+                        <p class="text-[8px] text-slate-500 font-mono">9313011CY</p>
+                      </div>
+                      <div class="space-y-1.5">
+                        <span class="text-[7px] font-black uppercase tracking-widest text-slate-400 block mb-1 text-center">Anggota</span>
+                        <div class="text-center px-2 py-1.5 bg-slate-50/50 rounded-md border border-slate-100">
+                          <p class="text-[9px] font-bold text-slate-700 truncate">Ranu Ardian</p><p class="text-[7px] text-slate-400 font-mono leading-none">8909005C</p>
+                        </div>
+                        <div class="text-center px-2 py-1.5 bg-slate-50/50 rounded-md border border-slate-100">
+                          <p class="text-[9px] font-bold text-slate-700 truncate">Wahyu Kusuma M.</p><p class="text-[7px] text-slate-400 font-mono leading-none">9715027CY</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Biro Hubungan Industrial -->
+                  <div class="glass-white rounded-2xl p-4 flex flex-col items-center group hover:-translate-y-1 transition-all duration-300 min-w-[220px] lg:min-w-0 snap-center shrink-0 border border-slate-100 card-3d">
+                    <div class="w-10 h-10 rounded-xl bg-brand-red/10 flex items-center justify-center mb-4 group-hover:bg-brand-red transition-colors">
+                      <i data-lucide="factory" class="w-5 h-5 text-brand-red group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h4 class="text-xs font-black text-slate-900 text-center leading-tight mb-4 min-h-[2.5rem] flex items-center uppercase">Biro Hub. Industrial</h4>
+                    <div class="w-full space-y-3">
+                      <div class="text-center p-2 bg-slate-50 rounded-lg border border-slate-200">
+                        <span class="text-[7px] font-black uppercase tracking-widest text-brand-red block mb-0.5">Ketua Biro</span>
+                        <p class="text-[10px] font-bold text-slate-900 truncate">Harsian</p>
+                        <p class="text-[8px] text-slate-500 font-mono">7907010Z</p>
+                      </div>
+                      <div class="space-y-1.5">
+                        <span class="text-[7px] font-black uppercase tracking-widest text-slate-400 block mb-1 text-center">Anggota</span>
+                        <div class="text-center px-2 py-1.5 bg-slate-50/50 rounded-md border border-slate-100">
+                          <p class="text-[9px] font-bold text-slate-700 truncate">Charisma Arif K.</p><p class="text-[7px] text-slate-400 font-mono leading-none">9009018C</p>
+                        </div>
+                        <div class="text-center px-2 py-1.5 bg-slate-50/50 rounded-md border border-slate-100">
+                          <p class="text-[9px] font-bold text-slate-700 truncate">Andi Ridwan M.</p><p class="text-[7px] text-slate-400 font-mono leading-none">9312011CY</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </section>
+
+              <!-- Vision area -->
+              <footer class="mt-20 glass-white rounded-[2.5rem] p-12 text-center overflow-hidden relative card-3d">
+                <div class="absolute top-0 left-0 w-full h-1 bg-brand-red"></div>
+                <h3 class="text-2xl font-serif italic text-slate-900 font-bold mb-4">Bersatu, Berjuang, Berjaya!</h3>
+                <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Solidaritas Tanpa Batas - DPD SP PLN Kalbar</p>
+              </footer>
+            </div>
+          </div>
+
+          <!-- Multi-Column Info Footer -->
+          <section class="mt-20 pt-20 border-t border-slate-200">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+              <div>
+                <p class="text-sm text-slate-500 font-medium leading-relaxed">Dewan Pimpinan Daerah Serikat Pekerja PT PLN (Persero) Unit Induk Wilayah Kalimantan Barat.</p>
+                <div class="flex gap-4 mt-8">
+                  <a href="#" class="p-2 bg-slate-100 rounded-lg text-slate-500 hover:text-brand-red transition-colors"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                  <a href="#" class="p-2 bg-slate-100 rounded-lg text-slate-500 hover:text-brand-red transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                  <a href="#" class="p-2 bg-slate-100 rounded-lg text-slate-500 hover:text-brand-red transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                </div>
+              </div>
+              <div>
+                <h4 class="text-sm font-black uppercase tracking-widest text-slate-800 mb-6 underline decoration-brand-yellow decoration-4 underline-offset-8">Tautan Cepat</h4>
+                <ul class="space-y-4 text-sm font-bold text-slate-500">
+                  <li class="hover:text-brand-red cursor-pointer transition-colors">Anggaran Dasar & Rumah Tangga</li>
+                  <li class="hover:text-brand-red cursor-pointer transition-colors">Struktur Organisasi</li>
+                  <li class="hover:text-brand-red cursor-pointer transition-colors">Agenda Kegiatan</li>
+                  <li class="hover:text-brand-red cursor-pointer transition-colors">Download Dokumen</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="text-sm font-black uppercase tracking-widest text-slate-800 mb-6 underline decoration-brand-yellow decoration-4 underline-offset-8">Kontak</h4>
+                <ul class="space-y-4 text-sm font-bold text-slate-500">
+                  <li class="flex gap-3"><i data-lucide="map-pin" class="w-5 h-5 text-brand-red flex-shrink-0"></i> Jl. Adi Sucipto KM. 7.3, Pontianak, Kalimantan Barat</li>
+                  <li class="flex gap-3"><i data-lucide="phone" class="w-5 h-5 text-brand-red flex-shrink-0"></i> (0561) 732288</li>
+                  <li class="flex gap-3"><i data-lucide="mail" class="w-5 h-5 text-brand-red flex-shrink-0"></i> sekretariat@spplnkalbar.org</li>
+                </ul>
+              </div>
+            </div>
+            <div class="mt-20 pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em]">
+              <p>© 2026 DPD SP PLN Kalbar. All Rights Reserved.</p>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+
+      // Simple script to switch tabs
+      function switchTab(tabId) {
+        // Hide all tabs
+        document.querySelectorAll('.tab-content').forEach(el => {
+          el.classList.remove('active');
+        });
+        
+        // Show target tab
+        const target = document.getElementById('tab-' + tabId);
+        if(target) target.classList.add('active');
+
+        // Update nav buttons
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+          btn.classList.remove('text-brand-red', 'bg-brand-red/25', 'border-[#ffffff]', 'shadow-sm');
+          btn.classList.add('text-slate-600', 'border-transparent');
+        });
+        const activeBtn = document.getElementById('nav-btn-' + tabId);
+        if(activeBtn) {
+          activeBtn.classList.remove('text-slate-600', 'border-transparent');
+          activeBtn.classList.add('text-brand-red', 'bg-brand-red/25', 'border-[#ffffff]', 'shadow-sm');
+        }
+      }
+
+      // Initialize the first tab
+      switchTab('home');
+    </script>
   </body>
 </html>
 
