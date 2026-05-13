@@ -11,7 +11,7 @@ interface Member {
 
 interface Bureau {
   name: string;
-  icon: any;
+  icon: React.ElementType;
   head: Member;
   members: Member[];
 }
