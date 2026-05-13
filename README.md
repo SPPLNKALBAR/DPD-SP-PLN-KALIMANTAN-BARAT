@@ -27,12 +27,18 @@ Aplikasi web untuk menampilkan profil dan struktur organisasi dari Dewan Pimpina
    ```
 5. Buka `http://localhost:3000` di browser Anda
 
-### Cara Build untuk Deployment
-Jika Anda ingin mengunggah dan menampilkan aplikasi ini sebagai halaman statis (misalnya di GitHub Pages), jalankan:
-```bash
-npm run build
-```
-Berkas-berkas siap pakai ("production-ready") akan dihasilkan di dalam folder `dist`. Folder ini bisa Anda upload ke hosting favorit Anda atau diatur menggunakan layanan GitHub Pages.
+### Cara Deploy ke GitHub Pages 
+
+Karena adanya pembatasan izin (*permission*) untuk ekspor *workflow/action* otomatis dari AI Studio ke akun GitHub, konfigurasi build otomatis harus dibuat langsung di website GitHub.
+
+Langkah demi langkah menggunakan GitHub Actions:
+1. Klik pengaturan ekspor lagi lalu **Push** repository ini ke GitHub tanpa error.
+2. Buka repository GitHub Anda di browser komputer.
+3. Klik tab **Settings** > lalu ke bagian **Pages** (ada di menu sisi kiri).
+4. Di bagian **Build and deployment** (atau **Source**), pilih opsi **GitHub Actions**.
+5. Klik **"Create your own"** atau gunakan alur bawaan GitHub, dan konfigurasi GitHub Action untuk framework statis/Vite akan muncul. GitHub akan *meng-compile* file TSX Anda menjadi HTML murni yang dapat dibaca dan menampilkannya di internet.
+
+Dengan langkah ini, Anda tidak perlu mengubah kembali proyek secara manual menjadi HTML klasik. Setingan canggih GitHub yang akan mengurus kompilasi kode *React* ini saat dideploy!
 
 ## Teknologi 
 - **React.js** (Vite + TS)
